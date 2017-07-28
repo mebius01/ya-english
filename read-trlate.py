@@ -5,45 +5,61 @@
 Прости меня Кнут
 Прости меня Вирт
 Ибо я грешен 
-Грех мой велик
+И грех мой велик
 """
 
+
+# получает файл с текстом. разделить строки по \n. преобразит верхний регистр в нижний
 import os, re, shutil
 tex=open('text.txt').read().split('\n')
-tex=str(tex)
-tex_split = re.findall('([A-Za-z]+)', tex); tex_split=list(set(tex_split))
+tex=str(tex).lower()
+print tex
 
-soft_dir=os.path.abspath('.')+'/'
-db_dir=soft_dir+'Db_dir/'
-working_dir=soft_dir+'Working_dir/'
+# удалить ,"':;. преобразить строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
+tex_split = re.findall('([A-Za-z]+)', tex); tex_split=list(set(tex_split))
+print tex_split
+ 
+soft_dir=os.path.abspath('.')+'/' #директория программы
+db_dir=soft_dir+'Db_dir/' # словарь на 5000 db_dir
+working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
 print(soft_dir, db_dir, working_dir)
 
+# Формируеn словарь {0: 'yard', 1: 'all', 2: 'just', 3: 'dreamed', 4: 'over', 5: 'move'} 
 dic_tex_split={}
 for i in tex_split:
 	dic_tex_split[tex_split.index(i)] = i
+print dic_tex_split
 
+# Формируеn словарь из db_dir {'abhor': 'abhor - питать отвращение.ogg', 'representative': 'representative - представитель.ogg'}
+g_list={}
+for i in os.listdir(db_dir):
+	result = re.search('(\S+)', i)
+	g_list[result.group(0)] = i
+
+"""
+# Формируеn список g_list[0][1] = attraction - привлекательность | g_list[0][1] = attraction
 #~ g_list=[]
 #~ for i in os.listdir(db_dir):
 	#~ result = re.search('(\S+)', i)
 	#~ g_list.append([result.group(0), i])
-	#~ 
-#~ # g_list[0][1] = attraction - привлекательность | g_list[0][1] = attraction
+"""
 
 
-el_in_db=[]
-print len(tex_split)
-for i in os.listdir(db_dir):
-	for ii in tex_split:
-		result = re.search('(\S+)', i)
-		if result.group(0) == ii.lower():
-			el_in_db.append(tex_split.index(ii))
+
+#~ el_in_db=[]
+#~ print len(tex_split)
+#~ for i in os.listdir(db_dir):
+	#~ for ii in tex_split:
+		#~ result = re.search('(\S+)', i)
+		#~ if result.group(0) == ii.lower():
+			#~ el_in_db.append(tex_split.index(ii))
 			#~ print(db_dir+i)
-print el_in_db
-
-while len(el_in_db) > 0:
-	del dic_tex_split[el_in_db.pop()]
-	
-print dic_tex_split
+#~ print el_in_db
+#~ 
+#~ while len(el_in_db) > 0:
+	#~ del dic_tex_split[el_in_db.pop()]
+	#~ 
+#~ print dic_tex_split
 			#~ shutil.copy(db_dir+i, working_dir)
 
 
