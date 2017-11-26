@@ -17,33 +17,34 @@ print tex
 
 # удалить ,"':;. преобразить строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
 tex_split = re.findall('([A-Za-z]+)', tex); tex_split=list(set(tex_split))
-#~ print len(tex_split)
+# print len(tex_split)
  
 soft_dir=os.path.abspath('.')+'/' #директория программы
 db_dir=soft_dir+'Db_dir/' # словарь на 5000 db_dir
 working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
-#~ print(soft_dir, db_dir, working_dir)
+# print(soft_dir, db_dir, working_dir)
 
-#~ поиск соответсвий, если  'just' == 'just' то just - верный, точный.ogg из db_dir копируем в working_dir
+# поиск соответсвий, если  'just' == 'just' то just - верный, точный.ogg из db_dir копируем в working_dir
 el_in_db=[]
 for i in os.listdir(db_dir):
 	for ii in tex_split:
 		result = re.search('(\S+)', i)
 		if result.group(0) == ii:
 			el_in_db.append(ii)
-			print(db_dir+i) # вывод полного пути к найденому файлу Заменить на копирование в working_dir
+			print(db_dir+i) # !!!!вывод полного пути к найденому файлу Заменить на копирование в working_dir
 
-#~ удаляем дубликаты 
+# удаляем дубликаты 
 el_in_db_new=list(set(el_in_db))
 
-#~ удалить из черного списка tex_split найденные элементы, tex_split становится рабочим списком для поиска перевода и аудио
+# удалить из грязного списка tex_split найденные элементы, tex_split становится рабочим списком для поиска перевода и аудио
 for i in el_in_db_new:
 	tex_split.remove(i)
 
 print(len(tex_split), len(el_in_db_new))
 
+# ------------------------------------------------------------------------
 
-#~ ------------------------------------------------------------------------
+"""Ключь API lingvolive YWQ4ZDhkZWItZmRmZC00NDEzLTkyMDgtMmQ5ZDhiM2UzODFmOjhjYzJmMDAyY2RlMzRmZmI4MzAwOWI5ODZlMzk4NjU4 """
 
 
 # Формируеn словарь {0: 'yard', 1: 'all', 2: 'just', 3: 'dreamed', 4: 'over', 5: 'move'} 
