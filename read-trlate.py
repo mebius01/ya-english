@@ -10,7 +10,7 @@
 
 
 # получает файл с текстом. разделить строки по \n. преобразит верхний регистр в нижний
-import os, re, shutil
+import os, re, shutil, urllib
 tex=open('text.txt').read().split('\n')
 tex=str(tex).lower()
 print tex
@@ -43,6 +43,40 @@ for i in el_in_db_new:
 print(len(tex_split), len(el_in_db_new))
 
 # ------------------------------------------------------------------------
+
+#~ https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20171127T133350Z.e60c3c9b07c632de.6feca9afc681cd8810631df190fe1bbd40eb3cd4&text=Learning how to take great photos is about more than just understanding how your camera works&lang=en-ru&format=plain&callback=callback
+
+#~ text=Learning how to take great photos is about more than just understanding how your camera works
+
+#~ otput
+#~ callback({"code":200,"lang":"en-ru","text":["Как научиться делать отличные фотографии-это больше, чем просто понимание того, как ваша камера работает"]})
+
+#~ https://translate.yandex.net/api/v1.5/tr.json/translate
+ #~ ? [key=<API-ключ>]
+ #~ & [text=<переводимый текст>]
+ #~ & [lang=<направление перевода>]
+ #~ & [format=<формат текста>]
+ #~ & [options=<опции перевода>]
+ #~ & [callback=<имя callback-функции>]
+
+
+#~ http://translate.google.ru/translate_a/t?client=x&text=Learning&hl=en&sl=en&tl=ru
+
+#~ https://github.com/z0rr0/ytapi  консольный переводчик с яндекс АПИ
+
+#~ https://tech.yandex.ru/translate/doc/dg/concepts/About-docpage/ доки на ЯнАПИ переводчик
+
+#~ https://pythoness.pp.ua/catalog/article/perevodchik-na-baze-python-i-storonnego-api/ Переводчик на базе Python и стороннего API
+
+#~ for i in tex_split:
+	#~ destination = i+'.ogg'
+	#~ url = 'https://tts.voicetech.yandex.net/generate?text='+i+'&format=opus&lang=en-US&speaker=jane&key=f593fa88-b2a8-4c3e-8f12-834b060c722c&speed=1&emotion=good'
+	#~ urllib.urlretrieve(url, destination)
+	#~ print "загрузка +"
+
+#~ https://tts.voicetech.yandex.net/generate?text=(((abstain)))&format=opus&lang=en-US&speaker=jane&key=f593fa88-b2a8-4c3e-8f12-834b060c722c&speed=1&emotion=good
+
+#~ https://pypi.python.org/pypi/py-translate
 
 """Ключь API lingvolive YWQ4ZDhkZWItZmRmZC00NDEzLTkyMDgtMmQ5ZDhiM2UzODFmOjhjYzJmMDAyY2RlMzRmZmI4MzAwOWI5ODZlMzk4NjU4 """
 
