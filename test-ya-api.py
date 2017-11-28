@@ -1,31 +1,42 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-#  test-ya-api.py
-#  
-#  Copyright 2017 ivan <ivan@W>
-#  
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#  
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#  
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#  MA 02110-1301, USA.
-#  
-#  
-import requests
-response = requests.post('https://ru.stackoverflow.com', json={"key": "value"})
-print response
 
-r = requests.post("http://bugs.python.org", data={'number': 12524, 'type': 'issue', 'action': 'show'})
-print(r.status_code, r.reason)
+import os, re, shutil, urllib, requests, copy
 
+soft_dir=os.path.abspath('.')+'/' #директория программы
+db_dir=soft_dir+'Db_dir/' # словарь на 5000 db_dir
+working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
+
+# создание директорий и заполняем файлами 1,2,3..200
+def MkDir():
+	ogg_file=os.listdir(working_dir)
+	work_len=len(os.listdir(working_dir))
+	work_dir=work_len/12
+	if work_len % 12 > 0:
+		work_dir+=1
+	work_dir2=copy.deepcopy(work_dir)
+	#~ z=1
+	#~ while z <= work_dir:
+		#~ os.mkdir(str(work_dir))
+		#~ work_dir-=1
+
+	while work_dir2 >= 1:
+		if len(str(work_dir2)) < 12:
+			shutil.move(working_dir+ogg_file.pop(0), str(work_dir2))
+			#~ work_dir2-=1
+	#~ while z2 < work_dir:
+		#~ if len(os.listdir(str(z2))) < 12:
+			#~ shutil.move(mp3.pop(0), str(z2))
+		#~ if len(os.listdir(str(z2))) == 12:
+			#~ z2+=1
+	
+	#~ audio_dir=range(five)
+	#~ for i in audio_dir:
+		#~ shutil.move(str(i), '5000')
+	#~ print work_ogg
+	print(ogg_file)
+	print(work_dir)
+	print(work_dir)
+	print "файлы в норках +"
+MkDir()
 	
