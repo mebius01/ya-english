@@ -13,11 +13,13 @@
 import os, re, shutil, urllib
 tex=open('text.txt').read().split('\n')
 tex=str(tex).lower()
-print tex
 
-# удалить ,"':;. преобразить строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
+# удалить ,"':;. удалить строки > 3 симв. преобразить строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
 tex_split = re.findall('([A-Za-z]+)', tex); tex_split=list(set(tex_split))
-# print len(tex_split)
+for i in tex_split:
+	if len(i) < 3:
+		tex_split.remove(i)
+
  
 soft_dir=os.path.abspath('.')+'/' #директория программы
 db_dir=soft_dir+'Db_dir/' # словарь на 5000 db_dir
@@ -25,14 +27,15 @@ working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_
 # print(soft_dir, db_dir, working_dir)
 
 # поиск соответсвий, если  'just' == 'just' то just - верный, точный.ogg из db_dir копируем в working_dir
+
 el_in_db=[]
 for i in os.listdir(db_dir):
 	for ii in tex_split:
 		result = re.search('(\S+)', i)
-		if result.group(0) == ii:
+		if ii == result.group(0):
 			el_in_db.append(ii)
-			print(db_dir+i) # !!!!вывод полного пути к найденому файлу Заменить на копирование в working_dir
-
+			print db_dir+i, ii # !!!!вывод полного пути к найденому файлу Заменить на копирование в working_dir
+#~ 
 # удаляем дубликаты 
 el_in_db_new=list(set(el_in_db))
 
@@ -43,6 +46,47 @@ for i in el_in_db_new:
 print(len(tex_split), len(el_in_db_new))
 
 # ------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #~ https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20171127T133350Z.e60c3c9b07c632de.6feca9afc681cd8810631df190fe1bbd40eb3cd4&text=Learning how to take great photos is about more than just understanding how your camera works&lang=en-ru&format=plain&callback=callback
 
