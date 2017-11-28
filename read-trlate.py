@@ -10,17 +10,20 @@
 
 
 # получает файл с текстом. разделить строки по \n. преобразит верхний регистр в нижний
-import os, re, shutil, urllib
+import os, re, shutil, urllib, requests
 tex=open('text.txt').read().split('\n')
 tex=str(tex).lower()
 
 # удалить ,"':;. удалить строки > 3 симв. преобразить строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
 tex_split = re.findall('([A-Za-z]+)', tex); tex_split=list(set(tex_split))
-for i in tex_split:
-	if len(i) < 3:
-		tex_split.remove(i)
+i=0
+while i < len(tex_split):
+	if len(tex_split[i]) < 3:
 
- 
+		del tex_split[i]
+	else:
+		i += 1
+
 soft_dir=os.path.abspath('.')+'/' #директория программы
 db_dir=soft_dir+'Db_dir/' # словарь на 5000 db_dir
 working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
@@ -35,7 +38,7 @@ for i in os.listdir(db_dir):
 		if ii == result.group(0):
 			el_in_db.append(ii)
 			print db_dir+i, ii # !!!!вывод полного пути к найденому файлу Заменить на копирование в working_dir
-#~ 
+ 
 # удаляем дубликаты 
 el_in_db_new=list(set(el_in_db))
 
@@ -43,11 +46,15 @@ el_in_db_new=list(set(el_in_db))
 for i in el_in_db_new:
 	tex_split.remove(i)
 
-print(len(tex_split), len(el_in_db_new))
 
-# ------------------------------------------------------------------------
-
-
+for i in tex_split:
+	r = requests.post("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20171127T133350Z.e60c3c9b07c632de.6feca9afc681cd8810631df190fe1bbd40eb3cd4",
+	data={'text':i, 'lang':"en-ru"})
+	destination = i+' - '+(r.json().get('text')[0])+'.ogg'
+	url = 'https://tts.voicetech.yandex.net/generate?text='+i+'&format=opus&lang=en-US&speaker=jane&key=f593fa88-b2a8-4c3e-8f12-834b060c722c&speed=1&emotion=good'
+	urllib.urlretrieve(url, destination)
+	print destination
+	print "загрузка +"
 
 
 
