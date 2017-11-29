@@ -90,3 +90,27 @@ def MkDir():
 				z+=1
 	except IndexError:
 		print ""
+
+# создание файлов вида ang - russ, ang, russ
+def ListFile():
+	for i in os.listdir("./5000"):
+		for ii in os.listdir("./5000/"+i):
+			print ii[:-4]
+			ang_rus_file=open('./5000/'+i+'/ang-rus.txt', 'a')
+			ang_rus_file.write(ii[:-4]+'\n')
+			ang_rus_file.close()
+			
+			a = ii.split(' - ')
+			
+			ang_rus_file=open('./5000/'+i+'/ang.txt', 'a')
+			ang_rus_file.write(a[0]+'\n')
+			ang_rus_file.close()
+			
+			ang_rus_file=open('./5000/'+i+'/rus.txt', 'a')
+			ang_rus_file.write(a[-1][:-4]+'\n')
+			ang_rus_file.close()
+			print a[0]
+			print a[-1][:-4]
+
+MkDir()
+#~ Download()
