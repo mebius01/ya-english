@@ -9,15 +9,19 @@
 """
 import os, re, shutil, urllib, requests, copy
 
+name_txt=raw_input('Name File: '); name_txt=str(name_txt)
 soft_dir=os.path.abspath('.')+'/' #директория программы
-db_dir=soft_dir+'Db_dir/' # словарь на 5000 db_dir
+db_dir=soft_dir+'Db_dir/' #  словарь db_dir
 working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
+
+os.mkdir(name_txt) 
+name_txt_dir=os.path.abspath(name_txt)+'/' # директория сбора 1 2 3 4 ...
 
 # получает файл с текстом. разделить строки по \n. преобразит верхний регистр в нижний
 tex=open('text.txt').read().split('\n')
 tex=str(tex).lower()
 
-# удалить ,"':;. удалить строки > 3 симв. преобразить строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
+# удалить ,"':;. удалить строки > 3 симв. преобразовать строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
 tex_split = re.findall('([A-Za-z]+)', tex); tex_split=list(set(tex_split))
 i=0
 while i < len(tex_split):
@@ -27,7 +31,7 @@ while i < len(tex_split):
 	else:
 		i += 1
 
-# поиск соответсвий, если  'just' == 'just' то just - просто.ogg из db_dir копируем в working_dir
+# поиск соответствий, если  'just' == 'just' то just - просто.ogg из db_dir копируем в working_dir
 el_in_db=[]
 for i in os.listdir(db_dir):
 	for ii in tex_split:
@@ -35,7 +39,6 @@ for i in os.listdir(db_dir):
 		if ii == result.group(0):
 			el_in_db.append(ii)
 			shutil.copy2(db_dir+i, working_dir) # !!!раскоментить
-			print db_dir+i, ii # !!!!вывод полного пути к найденому файлу Заменить на копирование в working_dir
 
 # удаляем дубликаты 
 el_in_db_new=list(set(el_in_db))
@@ -56,8 +59,7 @@ def Download():
 		urllib.urlretrieve(url, destination)
 		shutil.copy2(destination, working_dir)
 		shutil.move(destination, db_dir)
-		print destination
-		print "загрузка +"
+		print("Недостающие файлы. Загрузка +")
 
 
 def MkDir():
@@ -77,40 +79,40 @@ def MkDir():
 # создание директорий 1,2,3..200
 	z=1
 	while z <= work_dir:
-		os.mkdir(str(work_dir))
+		os.mkdir(name_txt_dir+str(work_dir))
 		work_dir-=1
 
-# и заполняем файлами	
+# и заполнить файлами	
 	z=1
 	try:
 		while z < work_dir2+1:
-			if len(os.listdir(str(z))) < 12:
-				shutil.copy2(ogg_file.pop(0), str(z))
-			if len(os.listdir(str(z))) == 12:
+			if len(os.listdir(name_txt_dir+str(z))) < 12:
+				shutil.copy2(ogg_file.pop(0), name_txt_dir+str(z))
+			if len(os.listdir(name_txt_dir+str(z))) == 12:
 				z+=1
 	except IndexError:
 		print ""
+	print("Файлы в норках")
 
 # создание файлов вида ang - russ, ang, russ
-def ListFile():
-	for i in os.listdir("./5000"):
-		for ii in os.listdir("./5000/"+i):
-			print ii[:-4]
-			ang_rus_file=open('./5000/'+i+'/ang-rus.txt', 'a')
+def ListWrite():
+	for i in os.listdir(name_txt_dir):
+		for ii in os.listdir(name_txt_dir+i):
+			ang_rus_file=open(name_txt_dir+i+'/en-ru.txt', 'a')
 			ang_rus_file.write(ii[:-4]+'\n')
 			ang_rus_file.close()
 			
 			a = ii.split(' - ')
 			
-			ang_rus_file=open('./5000/'+i+'/ang.txt', 'a')
+			ang_rus_file=open(name_txt_dir+i+'/en.txt', 'a')
 			ang_rus_file.write(a[0]+'\n')
 			ang_rus_file.close()
 			
-			ang_rus_file=open('./5000/'+i+'/rus.txt', 'a')
+			ang_rus_file=open(name_txt_dir+i+'/ru.txt', 'a')
 			ang_rus_file.write(a[-1][:-4]+'\n')
 			ang_rus_file.close()
-			print a[0]
-			print a[-1][:-4]
-
+	print("Файлы en,ru,en-ru.txt +")
+Download()
 MkDir()
-#~ Download()
+ListWrite()
+
