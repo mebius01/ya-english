@@ -9,7 +9,7 @@
 """
 import os, re, shutil, urllib, requests, copy
 
-name_txt=raw_input('Name File: '); name_txt=str(name_txt)
+name_txt=input('Name File: '); name_txt=str(name_txt)
 soft_dir=os.path.abspath('.')+'/' #директория программы
 db_dir=soft_dir+'Db_dir/' #  словарь db_dir
 working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
@@ -71,7 +71,7 @@ def MkDir():
 	for i in os.listdir(working_dir):
 		ogg_file.append(working_dir+i)
 
-	work_len=len(ogg_file); work_dir=work_len/12
+	work_len=len(ogg_file); work_dir=work_len/12; work_dir=int(work_dir)
 	if work_len % 12 > 0:
 		work_dir+=1
 	work_dir2=copy.deepcopy(work_dir)
@@ -91,8 +91,14 @@ def MkDir():
 			if len(os.listdir(name_txt_dir+str(z))) == 12:
 				z+=1
 	except IndexError:
-		print ""
+		True
 	print("Файлы в норках")
+	try:
+		for i in os.listdir(working_dir):
+			os.remove(i)
+	except:
+		True
+	print("Директория Working_dir очищена")
 
 # создание файлов вида ang - russ, ang, russ
 def ListWrite():
@@ -112,7 +118,7 @@ def ListWrite():
 			ang_rus_file.write(a[-1][:-4]+'\n')
 			ang_rus_file.close()
 	print("Файлы en,ru,en-ru.txt +")
-Download()
+#~ Download()
 MkDir()
 ListWrite()
 
