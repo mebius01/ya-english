@@ -10,15 +10,16 @@
 import os, re, shutil, urllib, requests, copy
 
 name_txt=input('Name File: '); name_txt=str(name_txt)
+
 soft_dir=os.path.abspath('.')+'/' #директория программы
 db_dir=soft_dir+'Db_dir/' #  словарь db_dir
-os.mkdir('Working_dir')
+#~ os.mkdir('Working_dir')
 working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
 os.mkdir(name_txt) 
 name_txt_dir=os.path.abspath(name_txt)+'/' # директория сбора 1 2 3 4 ...
 
 # получает файл с текстом. разделить строки по \n. преобразит верхний регистр в нижний
-tex=open('text.txt').read().split('\n')
+tex=open(name_txt+'.txt').read().split('\n')
 tex=str(tex).lower()
 
 # удалить ,"':;. удалить строки > 3 симв. преобразовать строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
@@ -87,17 +88,12 @@ def MkDir():
 	try:
 		while z < work_dir2+1:
 			if len(os.listdir(name_txt_dir+str(z))) < 12:
-				shutil.copy2(ogg_file.pop(0), name_txt_dir+str(z))
+				shutil.move(ogg_file.pop(0), name_txt_dir+str(z))
 			if len(os.listdir(name_txt_dir+str(z))) == 12:
 				z+=1
 	except IndexError:
 		True
 	print("Файлы в норках")
-	try:
-		shutil.rmtree(working_dir)		
-	except:
-		True
-	print("Директория Working_dir знищена")
 
 # создание файлов вида ang - russ, ang, russ
 def ListWrite():
