@@ -12,8 +12,8 @@ import os, re, shutil, urllib, requests, copy
 name_txt=input('Name File: '); name_txt=str(name_txt)
 soft_dir=os.path.abspath('.')+'/' #директория программы
 db_dir=soft_dir+'Db_dir/' #  словарь db_dir
+os.mkdir('Working_dir')
 working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
-
 os.mkdir(name_txt) 
 name_txt_dir=os.path.abspath(name_txt)+'/' # директория сбора 1 2 3 4 ...
 
@@ -94,11 +94,10 @@ def MkDir():
 		True
 	print("Файлы в норках")
 	try:
-		for i in os.listdir(working_dir):
-			os.remove(i)
+		shutil.rmtree(working_dir)		
 	except:
 		True
-	print("Директория Working_dir очищена")
+	print("Директория Working_dir знищена")
 
 # создание файлов вида ang - russ, ang, russ
 def ListWrite():
