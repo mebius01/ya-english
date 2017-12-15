@@ -7,7 +7,7 @@
 Ибо я грешен 
 И грех мой велик
 """
-import os, re, shutil, urllib, requests, copy
+import os, re, shutil, requests, copy, urllib.request
 
 name_txt=input('Name File: '); name_txt=str(name_txt)
 
@@ -15,14 +15,14 @@ soft_dir=os.path.abspath('.')+'/' #директория программы
 db_dir=soft_dir+'Db_dir/' #  словарь db_dir
 #~ os.mkdir('Working_dir')
 working_dir=soft_dir+'Working_dir/' # что нашли кладем в working_dir
-os.mkdir(name_txt) 
+ 
 name_txt_dir=os.path.abspath(name_txt)+'/' # директория сбора 1 2 3 4 ...
 
 # получает файл с текстом. разделить строки по \n. преобразит верхний регистр в нижний
-tex=open(name_txt+'.txt').read().split('\n')
-tex=str(tex).lower()
+tex=open(name_txt+'.txt').read().split('\n'); tex=str(tex).lower()
 
 # удалить ,"':;. удалить строки > 3 симв. преобразовать строку в список ['yard', 'all', 'just', 'dreamed', 'over', 'move']
+
 tex_split = re.findall('([A-Za-z]+)', tex); tex_split=list(set(tex_split))
 i=0
 while i < len(tex_split):
@@ -52,18 +52,20 @@ def Download():
 	"""
 	получить перевод с translate.yandex.net. Загружаем ogg с tts.voicetech.yandex.net. Формируем word - слово.ogg
 	"""
+	c=0
 	for i in tex_split:
 		r = requests.post("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20171127T133350Z.e60c3c9b07c632de.6feca9afc681cd8810631df190fe1bbd40eb3cd4",
 		data={'text':i, 'lang':"en-ru"})
 		destination = i+' - '+(r.json().get('text')[0])+'.ogg'
 		url = 'https://tts.voicetech.yandex.net/generate?text='+i+'&format=opus&lang=en-US&speaker=jane&key=f593fa88-b2a8-4c3e-8f12-834b060c722c&speed=1&emotion=good'
-		urllib.urlretrieve(url, destination)
+		urllib.request.urlretrieve(url, destination)
 		shutil.copy2(destination, working_dir)
 		shutil.move(destination, db_dir)
-		print("Недостающие файлы. Загрузка +")
-
+		c+=1
+		print("Недостающие файлы. Загрузка + ", c)
 
 def MkDir():
+	os.mkdir(name_txt)
 	"""
 	создание директорий 1 2 3 4 5 и тд, заполнить файлами ogg
 	"""
@@ -95,8 +97,10 @@ def MkDir():
 		True
 	print("Файлы в норках")
 
-# создание файлов вида ang - russ, ang, russ
 def ListWrite():
+	'''
+	создание файлов вида ang - russ, ang, russ
+	'''
 	for i in os.listdir(name_txt_dir):
 		for ii in os.listdir(name_txt_dir+i):
 			ang_rus_file=open(name_txt_dir+i+'/en-ru.txt', 'a')
@@ -113,7 +117,26 @@ def ListWrite():
 			ang_rus_file.write(a[-1][:-4]+'\n')
 			ang_rus_file.close()
 	print("Файлы en,ru,en-ru.txt +")
-#~ Download()
+	
+tex=open(name_txt+'.txt').read().split('\n')
+def TexTranslate():
+	tex_writ=open('en-ru '+name_txt+'.txt', 'a')
+	
+	for i in tex:
+		if len(re.findall('([A-Za-z]+)', i)) > 0:
+			t = ' '.join(re.findall('([A-Za-z]+)', i))
+			r = requests.post("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20171127T133350Z.e60c3c9b07c632de.6feca9afc681cd8810631df190fe1bbd40eb3cd4",
+			data={'text':t, 'lang':"en-ru"})
+			d = (r.json().get('text')[0])
+			tex_writ.write(t+'\n')
+			tex_writ.write(d+'\n')
+			tex_writ.write('\r')
+	tex_writ.close()
+	shutil.move('en-ru '+name_txt+'.txt', name_txt_dir)
+	print('en-ru '+name_txt+'.txt' + " в норке")
+
+Download()
 MkDir()
 ListWrite()
+TexTranslate()
 
